@@ -146,11 +146,10 @@
       }
 
       .passcode-header {
-        margin-bottom: 10px;
+        margin-bottom: 12px;
         display: flex;
-        flex-direction: column;
+        justify-content: center;
         align-items: center;
-        gap: 12px;
       }
 
       .passcode-subtitle {
@@ -271,6 +270,7 @@
       }
 
       .error-message {
+        display: none !important;
         min-height: 22px;
         margin-top: 12px;
         font-size: 0.92rem;
@@ -356,9 +356,33 @@
 
       .gift-box-wrap {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
+        gap: 12px;
         margin: 8px 0 18px;
+      }
+
+      .gift-prompt {
+        color: #d9628a;
+        font-size: 0.76rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        text-align: center;
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 0.2s ease, visibility 0.2s ease;
+        text-shadow: 0 2px 8px rgba(255, 196, 216, 0.65);
+      }
+
+      .gift-prompt.hidden {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      .gift-box-wrap.hidden {
+        display: none;
       }
 
       .gift-box {
@@ -414,17 +438,6 @@
         box-shadow: inset 0 0 0 5px rgba(255, 255, 255, 0.14);
       }
 
-      .gift-label {
-        display: block;
-        margin-top: 16px;
-        text-align: center;
-        font-size: clamp(1.2rem, 3vw, 2rem);
-        font-weight: 700;
-        font-family: "Baloo 2", "Comic Neue", cursive;
-        letter-spacing: -0.04em;
-        color: #4b2f44;
-      }
-
       .modal-overlay {
         position: fixed;
         inset: 0;
@@ -449,10 +462,10 @@
         width: min(100%, 360px);
         max-height: 76vh;
         overflow-y: auto;
-        background: linear-gradient(180deg, #fffdfd 0%, #fff6fb 100%);
-        border: 2px solid rgba(240, 188, 210, 0.8);
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(240, 188, 210, 0.25);
         border-radius: 26px;
-        box-shadow: 0 24px 50px rgba(70, 48, 70, 0.14), 0 0 0 8px rgba(255, 255, 255, 0.12);
+        box-shadow: none;
         padding: 20px 18px 18px;
         transform: translateY(0) scale(1);
         transition: transform 0.28s ease;
@@ -473,15 +486,6 @@
         background: linear-gradient(180deg, #e77e98, #d14a67);
         border-radius: 999px;
         border: 2px solid rgba(255, 255, 255, 0.18);
-      }
-
-      .letter-paper::before {
-        content: "";
-        position: absolute;
-        inset: 10px;
-        border-radius: 18px;
-        border: 1px solid rgba(219, 176, 206, 0.55);
-        pointer-events: none;
       }
 
       .letter-paper h3 {
@@ -779,7 +783,7 @@
       <section id="screen1" class="screen active" aria-live="polite">
         <div class="panel passcode-wrap">
           <div class="passcode-header">
-            <p class="passcode-subtitle">Swipe up for Face ID or Enter Passcode</p>
+            <p class="passcode-subtitle">Enter Passcode, Love.</p>
           </div>
 
           <div id="passcodeDots" class="passcode-dots" aria-hidden="true">
@@ -838,11 +842,11 @@
       <section id="screen3" class="screen" aria-live="polite">
         <div class="panel">
           <div class="gift-box-wrap">
+            <div id="giftPrompt" class="gift-prompt">Tap to open your gift</div>
             <div id="giftBox" class="gift-box" role="button" tabindex="0" aria-label="Open your gift box">
               <div class="ribbon"></div>
             </div>
           </div>
-          <span class="gift-label">Tap to open your gift</span>
         </div>
       </section>
 
@@ -920,6 +924,7 @@
       const keypadButtons = Array.from(document.querySelectorAll('.key-btn'));
       const errorMessage = document.getElementById('errorMessage');
       const giftBox = document.getElementById('giftBox');
+      const giftPrompt = document.getElementById('giftPrompt');
       const letterModal = document.getElementById('letterModal');
       const sealBtn = document.getElementById('sealBtn');
       const stampBurst = document.getElementById('stampBurst');
@@ -1040,6 +1045,9 @@
         });
       }
 
+      errorMessage.textContent = '';
+      errorMessage.style.display = 'none';
+
       function appendDigit(value) {
         if (passcodeInput.value.length >= 6) return;
         passcodeInput.value += value;
@@ -1071,7 +1079,7 @@
           return;
         }
 
-        errorMessage.textContent = 'Wrong passcode! Hint: Enter his birthday (MMDDYY)';
+        errorMessage.textContent = '';
         passcodeInput.value = '';
         updatePasscodeDots();
         passcodeInput.focus();
@@ -1159,7 +1167,19 @@
         }, 5200);
       }
 
+      function hideGiftPrompt() {
+        if (giftPrompt) {
+          giftPrompt.classList.add('hidden');
+        }
+
+        const giftWrap = document.querySelector('.gift-box-wrap');
+        if (giftWrap) {
+          giftWrap.classList.add('hidden');
+        }
+      }
+
       function openLetter() {
+        hideGiftPrompt();
         letterModal.classList.add('open');
         letterModal.setAttribute('aria-hidden', 'false');
         spawnFallingConfetti();
@@ -1192,31 +1212,6 @@
         }, 120);
       });
 
-      swipeTrack.addEventListener('touchstart', (event) => {
-        touchStartX = event.touches[0].clientX;
-      }, { passive: true });
-
-      swipeTrack.addEventListener('touchend', (event) => {
-        touchEndX = event.changedTouches[0].clientX;
-        const distance = touchEndX - touchStartX;
-
-        if (Math.abs(distance) < 50) return;
-
-        if (distance < 0 && activeSlide < photoCards.length - 1) {
-          activeSlide += 1;
-          updateSwipePosition();
-        } else if (distance > 0 && activeSlide > 0) {
-          activeSlide -= 1;
-          updateSwipePosition();
-        }
-
-        if (distance < 0 && activeSlide === photoCards.length - 1) {
-          setTimeout(() => {
-            openFinalMessage();
-          }, 220);
-        }
-      });
-
       swipeTrack.addEventListener('pointerdown', (event) => {
         touchStartX = event.clientX;
       });
@@ -1229,17 +1224,24 @@
 
         if (distance < 0 && activeSlide < photoCards.length - 1) {
           activeSlide += 1;
-          updateSwipePosition();
         } else if (distance > 0 && activeSlide > 0) {
           activeSlide -= 1;
-          updateSwipePosition();
+        } else {
+          return;
         }
+
+        updateSwipePosition();
 
         if (distance < 0 && activeSlide === photoCards.length - 1) {
           setTimeout(() => {
             openFinalMessage();
           }, 220);
         }
+      });
+
+      swipeTrack.addEventListener('pointercancel', () => {
+        touchStartX = 0;
+        touchEndX = 0;
       });
 
       finalMessageModal.addEventListener('click', (event) => {
@@ -1250,3 +1252,4 @@
     </script>
   </body>
 </html>
+
