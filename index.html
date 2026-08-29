@@ -199,9 +199,10 @@
 
       .keypad {
         display: grid;
-        grid-template-columns: repeat(3, minmax(58px, 1fr));
-        gap: 10px 12px;
+        grid-template-columns: repeat(3, minmax(72px, 1fr));
+        gap: 12px 14px;
         margin-top: 14px;
+        width: min(100%, 360px);
       }
 
       .key-btn {
@@ -210,8 +211,8 @@
         border-radius: 999px;
         background: rgba(255, 255, 255, 0.72);
         color: rgba(104, 151, 191, 0.96);
-        min-height: 68px;
-        font-size: clamp(1.1rem, 3vw, 1.55rem);
+        min-height: 78px;
+        font-size: clamp(1.35rem, 4vw, 1.8rem);
         font-weight: 700;
         letter-spacing: 0.02em;
         box-shadow: none;
@@ -230,12 +231,12 @@
       }
 
       .key-btn.delete {
-        font-size: 1.7rem;
+        font-size: 2.1rem;
         color: rgba(104, 151, 191, 0.96);
       }
 
       .key-btn.unlock-key {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         border-color: rgba(124, 173, 214, 0.95);
         color: rgba(104, 151, 191, 0.96);
       }
