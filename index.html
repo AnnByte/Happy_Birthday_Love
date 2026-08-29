@@ -1156,12 +1156,25 @@
       let miniGameTimerId = null;
       let miniGameSpawnId = null;
 
-      function updateSwipePosition() {
-        const cardWidth = photoCards[0].offsetWidth;
-        swipeTrack.scrollTo({ left: activeSlide * cardWidth, behavior: 'smooth' });
+      function syncGalleryIndicators() {
+        if (!swipeTrack || photoCards.length === 0) return;
+
+        const cardWidth = swipeTrack.clientWidth || photoCards[0].offsetWidth;
+        const nextSlide = Math.min(
+          Math.max(Math.round(swipeTrack.scrollLeft / cardWidth), 0),
+          photoCards.length - 1
+        );
+
+        activeSlide = nextSlide;
         galleryIndicators.forEach((dot, index) => {
           dot.classList.toggle('active', index === activeSlide);
         });
+      }
+
+      function updateSwipePosition() {
+        const cardWidth = photoCards[0].offsetWidth;
+        swipeTrack.scrollTo({ left: activeSlide * cardWidth, behavior: 'smooth' });
+        syncGalleryIndicators();
       }
 
       function spawnHearts() {
@@ -1520,6 +1533,12 @@
         }, 120);
       });
 
+      swipeTrack.addEventListener('scroll', () => {
+        if (!isSwiping) {
+          syncGalleryIndicators();
+        }
+      }, { passive: true });
+
       swipeTrack.addEventListener('touchstart', (event) => {
         touchStartX = event.touches[0].clientX;
         touchEndX = event.touches[0].clientX;
@@ -1529,6 +1548,7 @@
       swipeTrack.addEventListener('touchmove', (event) => {
         if (!isSwiping) return;
         touchEndX = event.touches[0].clientX;
+        syncGalleryIndicators();
       }, { passive: true });
 
       swipeTrack.addEventListener('touchend', () => {
