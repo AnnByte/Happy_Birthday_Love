@@ -1187,6 +1187,21 @@
         syncGalleryIndicators();
       }
 
+      function checkFinalGalleryMessage() {
+        if (!photoCards.length) return;
+
+        const lastIndex = photoCards.length - 1;
+        const lastCardWidth = photoCards[0].getBoundingClientRect().width || swipeTrack.clientWidth;
+        const reachedLast = Math.abs(swipeTrack.scrollLeft - (lastIndex * lastCardWidth)) <= 8
+          || swipeTrack.scrollLeft >= (swipeTrack.scrollWidth - swipeTrack.clientWidth) - 8;
+
+        if (reachedLast && activeSlide === lastIndex) {
+          setTimeout(() => {
+            openFinalMessage();
+          }, 220);
+        }
+      }
+
       function spawnHearts() {
         if (!heartParticles) return;
 
@@ -1582,12 +1597,7 @@
         }
 
         updateSwipePosition();
-
-        if (distance < 0 && activeSlide === photoCards.length - 1) {
-          setTimeout(() => {
-            openFinalMessage();
-          }, 220);
-        }
+        checkFinalGalleryMessage();
 
         touchStartX = 0;
         touchEndX = 0;
@@ -1623,12 +1633,7 @@
         }
 
         updateSwipePosition();
-
-        if (distance < 0 && activeSlide === photoCards.length - 1) {
-          setTimeout(() => {
-            openFinalMessage();
-          }, 220);
-        }
+        checkFinalGalleryMessage();
 
         touchStartX = 0;
         touchEndX = 0;
