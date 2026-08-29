@@ -1188,14 +1188,16 @@
       }
 
       function checkFinalGalleryMessage() {
-        if (!photoCards.length) return;
+        if (!photoCards.length || !swipeTrack) return;
 
         const lastIndex = photoCards.length - 1;
-        const lastCardWidth = photoCards[0].getBoundingClientRect().width || swipeTrack.clientWidth;
-        const reachedLast = Math.abs(swipeTrack.scrollLeft - (lastIndex * lastCardWidth)) <= 8
-          || swipeTrack.scrollLeft >= (swipeTrack.scrollWidth - swipeTrack.clientWidth) - 8;
+        const cardWidth = photoCards[0].getBoundingClientRect().width || swipeTrack.clientWidth;
+        if (!cardWidth) return;
 
-        if (reachedLast && activeSlide === lastIndex) {
+        const targetLeft = lastIndex * cardWidth;
+        const reachedLast = activeSlide === lastIndex || Math.abs(swipeTrack.scrollLeft - targetLeft) <= 8 || swipeTrack.scrollLeft >= (swipeTrack.scrollWidth - swipeTrack.clientWidth) - 8;
+
+        if (reachedLast && !finalMessageModal.classList.contains('open')) {
           setTimeout(() => {
             openFinalMessage();
           }, 220);
@@ -1560,6 +1562,7 @@
 
       swipeTrack.addEventListener('scroll', () => {
         syncGalleryIndicators();
+        checkFinalGalleryMessage();
       }, { passive: true });
 
       swipeTrack.addEventListener('touchstart', (event) => {
