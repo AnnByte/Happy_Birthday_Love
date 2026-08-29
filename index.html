@@ -1159,21 +1159,31 @@
       function syncGalleryIndicators() {
         if (!swipeTrack || photoCards.length === 0) return;
 
-        const cardWidth = swipeTrack.clientWidth || photoCards[0].offsetWidth;
+        const cardWidth = photoCards[0].getBoundingClientRect().width || swipeTrack.clientWidth;
+        if (!cardWidth) return;
+
         const nextSlide = Math.min(
           Math.max(Math.round(swipeTrack.scrollLeft / cardWidth), 0),
           photoCards.length - 1
         );
 
-        activeSlide = nextSlide;
+        if (nextSlide !== activeSlide) {
+          activeSlide = nextSlide;
+        }
+
         galleryIndicators.forEach((dot, index) => {
           dot.classList.toggle('active', index === activeSlide);
         });
       }
 
       function updateSwipePosition() {
-        const cardWidth = photoCards[0].offsetWidth;
-        swipeTrack.scrollTo({ left: activeSlide * cardWidth, behavior: 'smooth' });
+        if (!photoCards.length) return;
+
+        const cardWidth = photoCards[0].getBoundingClientRect().width || swipeTrack.clientWidth;
+        if (!cardWidth) return;
+
+        const targetLeft = activeSlide * cardWidth;
+        swipeTrack.scrollTo({ left: targetLeft, behavior: 'smooth' });
         syncGalleryIndicators();
       }
 
@@ -1534,9 +1544,7 @@
       });
 
       swipeTrack.addEventListener('scroll', () => {
-        if (!isSwiping) {
-          syncGalleryIndicators();
-        }
+        syncGalleryIndicators();
       }, { passive: true });
 
       swipeTrack.addEventListener('touchstart', (event) => {
