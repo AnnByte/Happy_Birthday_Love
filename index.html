@@ -7,7 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Comic+Neue:wght@700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Comic+Neue:wght@700&family=Dancing+Script:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
     <style>
       :root {
         --bg-1: #fff8fb;
@@ -257,7 +257,7 @@
       .seal-btn {
         background: linear-gradient(135deg, #d75f79, #b63c57);
         color: #fff7f8;
-        box-shadow: 0 12px 24px rgba(183, 77, 92, 0.2);
+        box-shadow: 0 12px 24px rgba(183, 77, 92, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.15);
       }
 
       .unlock-btn:hover,
@@ -266,7 +266,8 @@
       .primary-btn:focus-visible,
       .seal-btn:hover,
       .seal-btn:focus-visible {
-        transform: translateY(-1px);
+        transform: translateY(-1px) scale(1.02);
+        box-shadow: 0 14px 26px rgba(183, 77, 92, 0.28), 0 0 18px rgba(217, 108, 145, 0.18);
       }
 
       .error-message {
@@ -457,42 +458,50 @@
         visibility: visible;
       }
 
-      .letter-paper {
+      .card {
         position: relative;
         width: min(100%, 360px);
         max-height: 76vh;
-        overflow-y: auto;
-        background: rgba(255, 255, 255, 0.7);
-        border: 1px solid rgba(240, 188, 210, 0.25);
-        border-radius: 26px;
-        box-shadow: none;
-        padding: 20px 18px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        border-radius: 24px;
+        box-shadow: 0 18px 30px rgba(114, 137, 167, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        padding: 24px;
         transform: translateY(0) scale(1);
         transition: transform 0.28s ease;
+      }
+
+      .letter-content {
+        flex: 1;
+        overflow-y: auto;
+        padding-right: 12px;
         scrollbar-width: thin;
-        scrollbar-color: rgba(215, 91, 121, 0.8) rgba(250, 223, 232, 0.35);
+        scrollbar-color: rgba(135, 168, 214, 0.8) rgba(219, 231, 246, 0.45);
       }
 
-      .letter-paper::-webkit-scrollbar {
-        width: 10px;
+      .letter-content::-webkit-scrollbar {
+        width: 4px;
       }
 
-      .letter-paper::-webkit-scrollbar-track {
-        background: rgba(250, 223, 232, 0.35);
+      .letter-content::-webkit-scrollbar-track {
+        background: rgba(219, 231, 246, 0.45);
         border-radius: 999px;
       }
 
-      .letter-paper::-webkit-scrollbar-thumb {
-        background: linear-gradient(180deg, #e77e98, #d14a67);
+      .letter-content::-webkit-scrollbar-thumb {
+        background: rgba(144, 177, 218, 0.8);
         border-radius: 999px;
-        border: 2px solid rgba(255, 255, 255, 0.18);
       }
 
-      .letter-paper h3 {
-        margin: 0 0 16px;
-        text-align: center;
-        color: var(--purple-main);
-        font-size: 1.5rem;
+      .card-footer {
+        margin-top: 0;
+        padding-top: 8px;
       }
 
       .letter-text {
@@ -503,10 +512,19 @@
         white-space: pre-line;
         text-align: left;
         padding: 0 4px 8px;
+        font-family: "Nunito", "Segoe UI", sans-serif;
       }
 
       .letter-text strong {
-        color: var(--pink-deep);
+        display: block;
+        margin: 8px 0 12px;
+        text-align: center;
+        color: #d95d7f;
+        font-size: clamp(2rem, 6vw, 2.7rem);
+        line-height: 1.1;
+        font-family: "Dancing Script", "Baloo 2", cursive;
+        letter-spacing: 0.02em;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
       }
 
       .seal-btn {
@@ -541,7 +559,9 @@
 
       .gallery-section {
         display: none;
-        padding-top: 18px;
+        width: min(100%, 460px);
+        margin: 0 auto;
+        padding: 18px 10px 0;
       }
 
       .gallery-section.active {
@@ -554,17 +574,25 @@
       }
 
       .gallery-header h2 {
-        font-size: clamp(1.8rem, 7vw, 2.4rem);
+        font-size: clamp(2.2rem, 8vw, 3.1rem);
         margin-bottom: 6px;
+        color: #d95d7f;
+        font-family: "Dancing Script", "Baloo 2", cursive;
+        letter-spacing: 0.02em;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
       }
 
       .gallery-header p {
         margin: 0;
-        color: var(--muted);
+        color: rgba(91, 68, 84, 0.82);
+        font-family: "Nunito", "Segoe UI", sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
       }
 
       .photo-feed {
         position: relative;
+        width: 100%;
         overflow: hidden;
         border-radius: 22px;
         background: rgba(255, 255, 255, 0.55);
@@ -600,12 +628,26 @@
 
       .swipe-track {
         display: flex;
-        transition: transform 0.38s ease;
-        will-change: transform;
+        width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-x;
+        scrollbar-width: none;
+        user-select: none;
+        -webkit-user-select: none;
+        scroll-behavior: smooth;
+      }
+
+      .swipe-track::-webkit-scrollbar {
+        display: none;
       }
 
       .photo-card {
-        min-width: 100%;
+        flex: 0 0 100%;
+        width: 100%;
+        scroll-snap-align: start;
         background: rgba(255, 255, 255, 0.7);
         border-radius: 22px;
         overflow: hidden;
@@ -628,17 +670,171 @@
 
       .caption-bubble p {
         margin: 0;
-        color: var(--text);
+        color: rgba(60, 50, 58, 0.9);
         font-size: 0.96rem;
         line-height: 1.6;
+        font-family: "Nunito", "Segoe UI", sans-serif;
+        font-weight: 700;
+      }
+
+      .gallery-indicators {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .gallery-indicator {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(154, 172, 194, 0.5);
+        transition: transform 0.2s ease, background 0.2s ease;
+      }
+
+      .gallery-indicator.active {
+        background: rgba(217, 93, 127, 0.9);
+        transform: scale(1.2);
       }
 
       .swipe-hint {
         margin-top: 12px;
         text-align: center;
-        color: var(--muted);
+        color: rgba(87, 72, 83, 0.9);
         font-size: 0.85rem;
         letter-spacing: 0.04em;
+        font-family: "Nunito", "Segoe UI", sans-serif;
+        font-weight: 700;
+      }
+
+      .mini-game-btn {
+        width: 92%;
+        display: block;
+        margin: 14px auto 0;
+        border: none;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #d75f79, #b63c57);
+        color: #fff7f8;
+        font-size: 0.96rem;
+        font-weight: 800;
+        padding: 12px 16px;
+        cursor: pointer;
+        box-shadow: 0 12px 24px rgba(183, 77, 92, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.15);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .mini-game-btn:hover,
+      .mini-game-btn:focus-visible {
+        transform: translateY(-1px) scale(1.02);
+        box-shadow: 0 14px 26px rgba(183, 77, 92, 0.28), 0 0 18px rgba(217, 108, 145, 0.18);
+      }
+
+      .game-modal,
+      .reward-modal {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(74, 52, 75, 0.42);
+        padding: 18px;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.25s ease, visibility 0.25s ease;
+        z-index: 100;
+      }
+
+      .game-modal.open,
+      .reward-modal.open {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .game-panel,
+      .reward-panel {
+        position: relative;
+        width: min(100%, 300px);
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        border-radius: 22px;
+        box-shadow: 0 18px 30px rgba(110, 126, 160, 0.16);
+        overflow: hidden;
+      }
+
+      .game-panel {
+        padding: 14px 12px 12px;
+      }
+
+      .reward-panel {
+        padding: 18px 14px;
+        text-align: center;
+      }
+
+      .game-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        font-family: "Nunito", "Segoe UI", sans-serif;
+        font-weight: 800;
+        color: #5d4a59;
+      }
+
+      .game-arena {
+        position: relative;
+        height: 230px;
+        border-radius: 16px;
+        background: linear-gradient(180deg, rgba(255, 244, 247, 0.9), rgba(226, 239, 255, 0.8));
+        border: 1px solid rgba(224, 196, 214, 0.8);
+        overflow: hidden;
+        cursor: crosshair;
+      }
+
+      .mini-heart {
+        position: absolute;
+        width: 26px;
+        height: 26px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        animation: miniHeartAppear 3.8s ease-in-out forwards;
+        cursor: pointer;
+        user-select: none;
+        filter: drop-shadow(0 0 8px rgba(255, 143, 180, 0.35));
+      }
+
+      @keyframes miniHeartAppear {
+        0% {
+          opacity: 0;
+          transform: translate(-50%, 18px) scale(0.7) rotate(-8deg);
+        }
+        18% {
+          opacity: 1;
+        }
+        55% {
+          opacity: 1;
+          transform: translate(-50%, -10px) scale(1.08) rotate(4deg);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(-50%, -28px) scale(1.15) rotate(10deg);
+        }
+      }
+
+      .reward-panel h3 {
+        margin: 0 0 12px;
+        color: #d95d7f;
+        font-size: clamp(2rem, 7vw, 2.7rem);
+        font-family: "Dancing Script", "Baloo 2", cursive;
+      }
+
+      .reward-panel p {
+        margin: 0;
+        font-family: "Nunito", "Segoe UI", sans-serif;
+        color: #4d3550;
+        line-height: 1.6;
+        font-weight: 700;
       }
 
       .final-message-modal {
@@ -674,8 +870,11 @@
 
       .final-message-box h3 {
         margin: 0 0 10px;
-        color: var(--purple-main);
-        font-size: 1.6rem;
+        color: #d95d7f;
+        font-size: clamp(2.2rem, 7vw, 3rem);
+        font-family: "Dancing Script", "Baloo 2", cursive;
+        letter-spacing: 0.02em;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
       }
 
       .final-message-box p {
@@ -684,6 +883,7 @@
         line-height: 1.7;
         font-size: 0.96rem;
         text-align: justify;
+        font-family: "Nunito", "Segoe UI", sans-serif;
       }
 
       .final-message-box p strong {
@@ -691,41 +891,13 @@
         margin-top: 16px;
         text-align: center;
         font-weight: 800;
+        font-family: "Dancing Script", "Baloo 2", cursive;
+        font-size: clamp(2rem, 6vw, 2.6rem);
+        line-height: 1.1;
       }
 
       .heart-particles {
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        overflow: hidden;
-      }
-
-      .floating-heart {
-        position: absolute;
-        bottom: -20px;
-        left: 50%;
-        font-size: 1.2rem;
-        opacity: 0;
-        animation: floatHeart 2.8s ease-in forwards;
-        text-shadow: 0 0 8px rgba(255, 117, 170, 0.35);
-      }
-
-      @keyframes floatHeart {
-        0% {
-          transform: translate(-50%, 0) scale(0.6) rotate(0deg);
-          opacity: 0;
-        }
-        15% {
-          opacity: 1;
-        }
-        50% {
-          transform: translate(calc(-50% + var(--drift-x, 0px)), -110px) scale(1) rotate(8deg);
-          opacity: 1;
-        }
-        100% {
-          transform: translate(calc(-50% + var(--drift-x, 0px)), -220px) scale(1.2) rotate(-8deg);
-          opacity: 0;
-        }
+        display: none;
       }
 
       @keyframes heartFall {
@@ -876,8 +1048,32 @@
             </div>
           </div>
         </div>
+        <div class="gallery-indicators" aria-label="Photo navigation">
+          <span class="gallery-indicator active"></span>
+          <span class="gallery-indicator"></span>
+          <span class="gallery-indicator"></span>
+          <span class="gallery-indicator"></span>
+        </div>
         <div class="swipe-hint">Swipe hihi</div>
+        <button id="miniGameBtn" type="button" class="mini-game-btn">Play Mini Game</button>
       </section>
+    </div>
+
+    <div id="miniGameModal" class="game-modal" aria-hidden="true">
+      <div class="game-panel" role="dialog" aria-modal="true" aria-labelledby="miniGameTitle">
+        <div class="game-header">
+          <span id="miniGameTitle">Catch the Hearts</span>
+          <span id="miniGameTimer">15s</span>
+        </div>
+        <div id="miniGameArena" class="game-arena" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <div id="rewardModal" class="reward-modal" aria-hidden="true">
+      <div class="reward-panel" role="dialog" aria-modal="true">
+        <h3>You won my heart!</h3>
+        <p>Happy Birthday, love!</p>
+      </div>
     </div>
 
     <div id="finalMessageModal" class="final-message-modal" aria-hidden="true">
@@ -891,21 +1087,23 @@
     </div>
 
     <div id="letterModal" class="modal-overlay" aria-hidden="true">
-      <div class="letter-paper" role="dialog" aria-modal="true" aria-labelledby="letterTitle">
-        <h3 id="letterTitle">To My Love</h3>
-        <p class="letter-text">
-         
-          <strong>Happy Birthday, My Love!</strong>
+      <div class="card" role="dialog" aria-modal="true">
+        <div class="letter-content">
+          <p class="letter-text">
+            <strong>Happy Birthday, My Love!</strong>
 
-          First of all, I am very grateful for you. You are the most amazing person I have ever met, and I feel so lucky to have you in my life. Your love, kindness, and support mean the world to me, and I am so grateful for every moment we share together.
+            First of all, I am very grateful for you. You are the most amazing person I have ever met, and I feel so lucky to have you in my life. Your love, kindness, and support mean the world to me, and I am so grateful for every moment we share together.
 
-          You deserve all the happiness in the world, all the soft moments, all the beautiful memories, and all the love your soul can hold. May all your dreams come true, and may God bless you with good health, success, and endless joy.
+            You deserve all the happiness in the world, all the soft moments, all the beautiful memories, and all the love your soul can hold. May all your dreams come true, and may God bless you with good health, success, and endless joy.
 
-          I love you more than words can say, and I hope you always remember how deeply you are cherished.
+            I love you more than words can say, and I hope you always remember how deeply you are cherished.
 
-          Happy birthday, darling kooo! I love you so much, and I can't wait to celebrate many more birthdays with you (Sana sa mga susunod ay magkasama na tayo magcelebrate and not virtually, love).
-        </p>
-        <button id="sealBtn" class="seal-btn" type="button">View Memories </button>
+            Happy birthday, darling kooo! I love you so much, and I can't wait to celebrate many more birthdays with you (Sana sa mga susunod ay magkasama na tayo magcelebrate and not virtually, love).
+          </p>
+        </div>
+        <div class="card-footer">
+          <button id="sealBtn" class="seal-btn" type="button">View Memories</button>
+        </div>
       </div>
     </div>
 
@@ -930,17 +1128,31 @@
       const stampBurst = document.getElementById('stampBurst');
       const swipeTrack = document.getElementById('swipeTrack');
       const photoCards = Array.from(swipeTrack.querySelectorAll('.photo-card'));
+      const galleryIndicators = Array.from(document.querySelectorAll('.gallery-indicator'));
       const finalMessageModal = document.getElementById('finalMessageModal');
       const heartParticles = document.querySelector('.heart-particles');
       const screenHearts = document.getElementById('screenHearts');
+      const miniGameBtn = document.getElementById('miniGameBtn');
+      const miniGameModal = document.getElementById('miniGameModal');
+      const miniGameArena = document.getElementById('miniGameArena');
+      const miniGameTimer = document.getElementById('miniGameTimer');
+      const rewardModal = document.getElementById('rewardModal');
       let activeSlide = 0;
       let touchStartX = 0;
       let touchEndX = 0;
+      let isSwiping = false;
       let screenHeartInterval = null;
       let birthdayTapListenerAttached = false;
+      let miniGameScore = 0;
+      let miniGameTimerId = null;
+      let miniGameSpawnId = null;
 
       function updateSwipePosition() {
-        swipeTrack.style.transform = `translateX(-${activeSlide * 100}%)`;
+        const cardWidth = photoCards[0].offsetWidth;
+        swipeTrack.scrollTo({ left: activeSlide * cardWidth, behavior: 'smooth' });
+        galleryIndicators.forEach((dot, index) => {
+          dot.classList.toggle('active', index === activeSlide);
+        });
       }
 
       function spawnHearts() {
@@ -992,13 +1204,87 @@
       function openFinalMessage() {
         finalMessageModal.classList.add('open');
         finalMessageModal.setAttribute('aria-hidden', 'false');
-        spawnHearts();
       }
 
       function closeFinalMessage() {
         finalMessageModal.classList.remove('open');
         finalMessageModal.setAttribute('aria-hidden', 'true');
         if (heartParticles) heartParticles.innerHTML = '';
+      }
+
+      function closeMiniGame() {
+        miniGameModal.classList.remove('open');
+        miniGameModal.setAttribute('aria-hidden', 'true');
+        miniGameArena.innerHTML = '';
+      }
+
+      function openRewardModal() {
+        rewardModal.classList.add('open');
+        rewardModal.setAttribute('aria-hidden', 'false');
+        triggerConfettiBurst();
+      }
+
+      function closeRewardModal() {
+        rewardModal.classList.remove('open');
+        rewardModal.setAttribute('aria-hidden', 'true');
+      }
+
+      function startMiniGame() {
+        miniGameScore = 0;
+        const timeLimit = 15;
+        miniGameModal.classList.add('open');
+        miniGameModal.setAttribute('aria-hidden', 'false');
+        miniGameTimer.textContent = `${timeLimit}s`;
+        miniGameArena.innerHTML = '';
+
+        if (miniGameTimerId) clearInterval(miniGameTimerId);
+        if (miniGameSpawnId) clearInterval(miniGameSpawnId);
+
+        let remaining = timeLimit;
+        miniGameTimerId = setInterval(() => {
+          remaining -= 1;
+          miniGameTimer.textContent = `${Math.max(remaining, 0)}s`;
+
+          if (remaining <= 0) {
+            clearInterval(miniGameTimerId);
+            clearInterval(miniGameSpawnId);
+            closeMiniGame();
+
+            if (miniGameScore >= 10) {
+              openRewardModal();
+            }
+          }
+        }, 1000);
+
+        miniGameSpawnId = setInterval(() => {
+          if (miniGameScore >= 10) {
+            clearInterval(miniGameSpawnId);
+            return;
+          }
+
+          const heart = document.createElement('div');
+          heart.className = 'mini-heart';
+          const asset = Math.random() > 0.5 ? 'images/heart1_transparent.png' : 'images/heart2_transparent.png';
+          heart.style.backgroundImage = `url('${asset}')`;
+          heart.style.left = `${Math.random() * 78 + 6}%`;
+          heart.style.top = `${Math.random() * 58 + 18}%`;
+          heart.style.animationDuration = `${3.6 + Math.random() * 1.8}s`;
+          heart.addEventListener('click', () => {
+            heart.remove();
+            miniGameScore += 1;
+
+            if (miniGameScore >= 10) {
+              clearInterval(miniGameSpawnId);
+              clearInterval(miniGameTimerId);
+              miniGameTimer.textContent = '0s';
+              closeMiniGame();
+              openRewardModal();
+            }
+          });
+
+          miniGameArena.appendChild(heart);
+          setTimeout(() => heart.remove(), 5200);
+        }, 560);
       }
 
       function showScreen(targetScreen) {
@@ -1198,6 +1484,14 @@
         }
       });
 
+      miniGameBtn.addEventListener('click', startMiniGame);
+
+      rewardModal.addEventListener('click', (event) => {
+        if (event.target === rewardModal) {
+          closeRewardModal();
+        }
+      });
+
       sealBtn.addEventListener('click', () => {
         closeLetter();
         stampBurst.classList.add('show');
@@ -1212,21 +1506,36 @@
         }, 120);
       });
 
-      swipeTrack.addEventListener('pointerdown', (event) => {
-        touchStartX = event.clientX;
-      });
+      swipeTrack.addEventListener('touchstart', (event) => {
+        touchStartX = event.touches[0].clientX;
+        touchEndX = event.touches[0].clientX;
+        isSwiping = true;
+      }, { passive: true });
 
-      swipeTrack.addEventListener('pointerup', (event) => {
-        touchEndX = event.clientX;
+      swipeTrack.addEventListener('touchmove', (event) => {
+        if (!isSwiping) return;
+        touchEndX = event.touches[0].clientX;
+      }, { passive: true });
+
+      swipeTrack.addEventListener('touchend', () => {
+        if (!isSwiping) return;
+
         const distance = touchEndX - touchStartX;
+        isSwiping = false;
 
-        if (Math.abs(distance) < 50) return;
+        if (Math.abs(distance) < 40) {
+          touchStartX = 0;
+          touchEndX = 0;
+          return;
+        }
 
         if (distance < 0 && activeSlide < photoCards.length - 1) {
           activeSlide += 1;
         } else if (distance > 0 && activeSlide > 0) {
           activeSlide -= 1;
         } else {
+          touchStartX = 0;
+          touchEndX = 0;
           return;
         }
 
@@ -1237,9 +1546,60 @@
             openFinalMessage();
           }, 220);
         }
+
+        touchStartX = 0;
+        touchEndX = 0;
+      }, { passive: true });
+
+      swipeTrack.addEventListener('pointerdown', (event) => {
+        touchStartX = event.clientX;
+        touchEndX = event.clientX;
+        isSwiping = true;
+      });
+
+      swipeTrack.addEventListener('pointerup', (event) => {
+        if (!isSwiping) return;
+
+        touchEndX = event.clientX;
+        const distance = touchEndX - touchStartX;
+        isSwiping = false;
+
+        if (Math.abs(distance) < 50) {
+          touchStartX = 0;
+          touchEndX = 0;
+          return;
+        }
+
+        if (distance < 0 && activeSlide < photoCards.length - 1) {
+          activeSlide += 1;
+        } else if (distance > 0 && activeSlide > 0) {
+          activeSlide -= 1;
+        } else {
+          touchStartX = 0;
+          touchEndX = 0;
+          return;
+        }
+
+        updateSwipePosition();
+
+        if (distance < 0 && activeSlide === photoCards.length - 1) {
+          setTimeout(() => {
+            openFinalMessage();
+          }, 220);
+        }
+
+        touchStartX = 0;
+        touchEndX = 0;
+      });
+
+      swipeTrack.addEventListener('pointerleave', () => {
+        isSwiping = false;
+        touchStartX = 0;
+        touchEndX = 0;
       });
 
       swipeTrack.addEventListener('pointercancel', () => {
+        isSwiping = false;
         touchStartX = 0;
         touchEndX = 0;
       });
